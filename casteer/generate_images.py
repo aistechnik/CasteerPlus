@@ -9,7 +9,7 @@ from models import get_model
 # parsing arguments
 import argparse
 parser = argparse.ArgumentParser()
-parser.add_argument('--model', type=str, choices=['sdxl', 'sdxl-turbo', 'sdxl-turbo-tuned'], default="sdxl-turbo")
+parser.add_argument('--model', type=str, choices=['sdxl', 'sdxl-turbo', 'sdxl-tuned', 'sdxl-turbo-tuned'], default="sdxl-turbo")
 parser.add_argument('--image_name', type=str, default="girl_with_kitty")
 parser.add_argument('--prompt', type=str, default="a girl with a kitty")
 parser.add_argument('--seed', type=int, default=0)
@@ -19,7 +19,7 @@ parser.add_argument('--num_denoising_steps', type=int, default=50) # 1 for turbo
 parser.add_argument('--steer_back', action='store_true')
 parser.add_argument('--alpha', type=str, default="10")
 parser.add_argument('--beta', type=int, default=2)
-parser.add_argument('--save_dir', type=str, default='images') # path to saving generated images
+parser.add_argument('--save_dir', type=str, default='casteer_images') # path to saving generated images
 args = parser.parse_args()
 
 
