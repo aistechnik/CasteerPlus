@@ -13,7 +13,7 @@ from models import get_model
 # parsing arguments
 import argparse
 parser = argparse.ArgumentParser()
-parser.add_argument('--model', type=str, choices=['sdxl', 'sdxl-turbo', 'sdxl-tuned', 'sdxl-turbo_tuned'], default="sdxl-turbo")
+parser.add_argument('--model', type=str, choices=['sdxl', 'sdxl-turbo', 'sdxl-tuned', 'sdxl-turbo-tuned'], default="sdxl-turbo")
 parser.add_argument('--mode', type=str, choices=['concrete', 'human-related', 'style'], default="style")
 parser.add_argument('--num_denoising_steps', type=int, default=50) # 1 for turbo, 30 for sdxl
 parser.add_argument('--concept_pos', type=str, default="anime")
