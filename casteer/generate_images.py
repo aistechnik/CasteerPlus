@@ -1,13 +1,15 @@
 import os
-import pickle
+import argparse
 import torch
+import pickle
+import subprocess
 
 # local imports
 from controller import VectorStore, register_vector_control
 from models import get_model
 
+
 # parsing arguments
-import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument('--model', type=str, choices=['sdxl', 'sdxl-turbo', 'sdxl-tuned', 'sdxl-turbo-tuned'], default="sdxl-turbo")
 parser.add_argument('--image_name', type=str, default="girl_with_kitty")
@@ -20,6 +22,7 @@ parser.add_argument('--steer_back', action='store_true')
 parser.add_argument('--alpha', type=str, default="10")
 parser.add_argument('--beta', type=int, default=2)
 parser.add_argument('--save_dir', type=str, default='casteer_images') # path to saving generated images
+parser.add_argument('--select_best_image', action='store_true')
 args = parser.parse_args()
 
 
@@ -79,3 +82,5 @@ for i in range(len(alphas)):
     image = run_model(args.model, pipe, args.prompt, args.seed, args.num_denoising_steps)
     image.save(os.path.join(image_save_dir, "{}.png".format(str(i+1))))
 
+if args.select_best_image:
+    subprocess.run(['python', 'select_best_image.py', 'args.image_name', 'args.prompt', 'args.save_dir'])

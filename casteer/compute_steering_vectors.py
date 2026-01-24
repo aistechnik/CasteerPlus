@@ -1,17 +1,17 @@
 import os
+import argparse
 import numpy as np
-import pickle
 import torch
+import pickle
 from collections import defaultdict
-
 
 # local imports
 from construct_prompts import get_prompts_concrete, get_prompts_style, get_prompts_human_related
 from controller import VectorStore, register_vector_control
 from models import get_model
 
+
 # parsing arguments
-import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument('--model', type=str, choices=['sdxl', 'sdxl-turbo', 'sdxl-tuned', 'sdxl-turbo-tuned'], default="sdxl-turbo")
 parser.add_argument('--mode', type=str, choices=['concrete', 'human-related', 'style'], default="style")

@@ -1,14 +1,15 @@
 import os
+import argparse
 import torch
 import ImageReward as RM
 from PIL import Image
 
+
 # parsing arguments
-import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument('--image_name', type=str, default="girl_with_kitty")
 parser.add_argument('--prompt', type=str, default="a girl with a kitty")
-parser.add_argument('--image_show', action='store_true')
+parser.add_argument('--show_image', action='store_true')
 parser.add_argument('--save_dir', type=str, default='images') # path to saving generated images
 args = parser.parse_args()
 
@@ -16,6 +17,8 @@ args = parser.parse_args()
 # transform arguments
 image_name = args.image_name.replace(' ','_')
 img_prefix = args.save_dir+'/'+image_name
+print(img_prefix)
+print(args.prompt)
 
 generations = [f"{pic_id}.png" for pic_id in range(1, 5)]
 img_list = [os.path.join(img_prefix, img) for img in generations]
@@ -38,7 +41,7 @@ with torch.no_grad():
 
 print(f"The best image with the highest ImageReward score is {img_list[best_index]}")
 
-if args.image_show:
+if args.show_image:
     image = Image.open(img_list[best_index])
     image.show()
 

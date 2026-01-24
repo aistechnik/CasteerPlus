@@ -1,3 +1,10 @@
 # CasteerPlus
 A customizable implementation of [CASteer](https://arxiv.org/abs/2503.09630) for steering of generation of the high quality images in Stable Diffusion models,
-based on the code for the paper "CASteer: Steering Diffusion Models for Controllable Generation" (https://github.com/Atmyre/CASteer) and also on the repository code (https://github.com/sidhantls/minimal-casteer).
+
+based on the code for the paper "CASteer: Steering Diffusion Models for Controllable Generation" () and also on the repository code (
+
+https://github.com/Atmyre/CASteer
+
+https://github.com/sidhantls/minimal-casteer
+
+https://github.com/zacharyhorvitz/Fk-Diffusion-Steering
