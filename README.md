@@ -7,4 +7,4 @@ https://github.com/Atmyre/CASteer
 
 https://github.com/sidhantls/minimal-casteer
 
-https://github.com/zacharyhorvitz/Fk-Diffusion-Steering
+

@@ -7,7 +7,7 @@ import subprocess
 # local imports
 from controller import VectorStore, register_vector_control
 from models import get_model
-
+from evaluate_images import calculate_image_score
 
 # parsing arguments
 parser = argparse.ArgumentParser()
@@ -22,7 +22,7 @@ parser.add_argument('--steer_back', action='store_true')
 parser.add_argument('--alpha', type=str, default="10")
 parser.add_argument('--beta', type=int, default=2)
 parser.add_argument('--save_dir', type=str, default='casteer_images') # path to saving generated images
-parser.add_argument('--select_best_image', action='store_true')
+parser.add_argument('--evaluate_images', action='store_true')
 args = parser.parse_args()
 
 
@@ -30,7 +30,7 @@ pipe = get_model(args.model)
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 pipe.to(device)
-
+pipe.set_progress_bar_config(disable=True)
 
 def run_model(model_type, pipe, prompt, seed, num_denoising_steps):
     if args.model in ['sdxl', 'sdxl-tuned']:
@@ -53,6 +53,7 @@ def run_model(model_type, pipe, prompt, seed, num_denoising_steps):
 image_name = args.image_name.replace(' ','_')
 image_save_dir = args.save_dir+'/'+image_name
 alphas = args.alpha.split(',')
+number_images = len(alphas)
 
 print('Generating for prompt:')
 print(args.prompt)
@@ -82,5 +83,5 @@ for i in range(len(alphas)):
     image = run_model(args.model, pipe, args.prompt, args.seed, args.num_denoising_steps)
     image.save(os.path.join(image_save_dir, "{}.png".format(str(i+1))))
 
-if args.select_best_image:
-    subprocess.run(['python', 'select_best_image.py', 'args.image_name', 'args.prompt', 'args.save_dir'])
+if args.evaluate_images:
+    calculate_image_score(image_save_dir, args.prompt, number_images)
