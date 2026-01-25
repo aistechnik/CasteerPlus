@@ -18,6 +18,8 @@ parser.add_argument('--prompt', type=str, default="a girl with a kitty")
 parser.add_argument('--num_denoising_steps', type=int, default=50) #  1 for turbo, 30 for sdxl
 parser.add_argument('--concept_pos', type=str, default="anime")
 parser.add_argument('--concept_neg', type=str, default="classic")
+parser.add_argument('--alpha', type=str, default="10")
+parser.add_argument('--evaluate_images', action='store_true'
 parser.add_argument('--save_dir', type=str, default='steering_vectors') # path to saving steering vectors
 parser.add_argument('--image_save_dir', type=str, default='images') # path to saving generated images
 args = parser.parse_args()
@@ -29,7 +31,6 @@ pipe.to(device)
 pipe.set_progress_bar_config(disable=True)
 
 
-
 ## Hyper Paramters
 STEER_TYPE = "default"
 INF_STEPS = 20
@@ -38,11 +39,11 @@ GUIDE_SCALE = 5.0
 
 # Loads "calibration dataset": dataset from which steering vectors are derived from
 if args.mode == "style":
-    prompts = prompt_catalog.ANIME_PROMPT[:20]
+    steer_prompts = prompt_catalog.ANIME_PROMPT[:20]
 elif args.mode == "metal":
-    prompts = prompt_catalog.METALLIC_SCULPTURE_SET[:20]
+    steer_prompts = prompt_catalog.METALLIC_SCULPTURE_SET[:20]
 elif args.mode == "fine_image":
-    prompts = prompt_catalog.FINE_IMAGE_PROMPT[:20]
+    steer_prompts = prompt_catalog.FINE_IMAGE_PROMPT[:20]
 
 else:
   raise NotImplementedError(f"Steering prompt mode {args.mode} not implemented")
@@ -53,7 +54,7 @@ steer_hooks = steering.add_steer_hooks(pipe, steer_type=STEER_TYPE, save_every=1
 steering_vectors = steering.build_final_steering_vectors(
     pipe,
     steer_hooks,
-    prompts,
+    steer_prompts,
     num_inference_steps=INF_STEPS,
     guidance_scale=GUIDE_SCALE
 )
@@ -69,19 +70,20 @@ print("steering_vectors shape: ", steering_vectors[0].shape) # (20, 2, 640)
 # adds calculated steering vectors to hooks so it can be applied during forward pass
 steering.add_final_steer_vectors(steer_hooks, steering_vectors)
 
-TEST_PROMPTS = [ args.prompt ]
-print(TEST_PROMPTS)
-# generates images using steering vectors
-STEER_SCALE_LIST = [0.0, 1.0, 2.0, 10.0]
+test_prompts = [ args.prompt ]
+print(test_prompts)
+alphas = [ args.alpha ]
+number_images = len(alphas)
+print(alphas, number_images)
+
 steering.run_grid_experiment(
-    pipe, steer_hooks, TEST_PROMPTS,
+    pipe, steer_hooks, test_prompts,
     num_inference_steps=INF_STEPS,
     steer_type=STEER_TYPE,
     gscale_list=[GUIDE_SCALE],
-    steer_scale_list=STEER_SCALE_LIST, # (0.0: no steering (baseline), 10.0: strong steering)
+    steer_scale_list=alphas, # (0.0: no steering (baseline), 10.0: strong steering)
     out_root=f"{args.mode}_experiments",
 )
-
 
 # Example usage:
 folder = f"{args.mode}_experiments"

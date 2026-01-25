@@ -21,8 +21,9 @@ parser.add_argument('--num_denoising_steps', type=int, default=50) # 1 for turbo
 parser.add_argument('--steer_back', action='store_true')
 parser.add_argument('--alpha', type=str, default="10")
 parser.add_argument('--beta', type=int, default=2)
+parser.add_argument('--evaluate_images', action='store_true'
 parser.add_argument('--save_dir', type=str, default='casteer_images') # path to saving generated images
-parser.add_argument('--evaluate_images', action='store_true')
+)
 args = parser.parse_args()
 
 

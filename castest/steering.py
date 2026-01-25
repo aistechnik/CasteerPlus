@@ -39,6 +39,7 @@ class SteeringHooks:
         self.steer_type = steer_type
         self.last_half_timesteps = last_half_timesteps
 
+
     def hook_fn(self, module, inputs, x_seq):
         """
         This function is run immediately after each forward pass of the layer it's hooked to
@@ -79,6 +80,7 @@ class SteeringHooks:
         self.step += 1
         return x_seq
 
+
 def clear_steer_cache(steer_hooks: Sequence[SteeringHooks]) -> None:
     """
     Clears the cache and resets the step for all steering hooks.
@@ -108,6 +110,7 @@ def find_cross_attention_modules(unet):
         if getattr(m, "is_cross_attention", False):
             targets.append((name, m))
     return targets
+
 
 def add_steer_hooks(
     pipe: StableDiffusionXLPipeline,
@@ -144,6 +147,7 @@ def add_steer_hooks(
     print(f"[hooks] Added {len(steer_hooks)} cross-attn hooks")
     return steer_hooks
 
+
 def add_final_steer_vectors(steer_hooks,final_steering_vectors):
     """
     Attaches the final steering vectors to each SteeringHooks object for use during image generation.
@@ -159,6 +163,7 @@ def add_final_steer_vectors(steer_hooks,final_steering_vectors):
     
     print(f"[hooks] Attached {len(final_steering_vectors)} steering vectors")
 
+
 def set_steer_scale(steer_hooks, scale):
     """
     Sets the steering scale for all SteeringHooks objects.
@@ -170,6 +175,7 @@ def set_steer_scale(steer_hooks, scale):
 
     for hook in steer_hooks:
         hook.scale_steer = float(scale)
+
 
 def reset_step(steer_hooks):
     """
@@ -290,6 +296,7 @@ def build_final_steering_vectors(
 
     print(f"[vectors] Built {len(final_vectors)} steering vectors; each like {tuple(final_vectors[0].shape)}")
     return final_vectors # [(timesteps, n=1, dim=640), ...]
+
 
 def generate_images(
     pipe: StableDiffusionXLPipeline,
