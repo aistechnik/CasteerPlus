@@ -59,8 +59,8 @@ is_origin_image = False
 if not os.path.exists(image_save_dir):
     os.makedirs(image_save_dir)
 
- with open(args.steering_vectors, 'rb') as handle:
-     steering_vectors = pickle.load(handle)
+with open(args.steering_vectors, 'rb') as handle:
+    steering_vectors = pickle.load(handle)
 
 print('Generating for prompt:')
 print(args.prompt)
