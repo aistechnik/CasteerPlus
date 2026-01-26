@@ -5,8 +5,10 @@ import ImageReward as RM
 
 def calculate_image_score(img_prefix, prompt, num_images, is_origin_image):
     prompt = prompt + ", anime style"
-    size = num_images + 1
+    print("is_origin_image",is_origin_image)
+    #size = num_images + 1
     indx = 0 if is_origin_image else 1
+    size = num_images if is_origin_image else num_images + 1
     generations = [f"{pic_id}.png" for pic_id in range(indx, size)]
     img_list = [os.path.join(img_prefix, img) for img in generations]
     model = RM.load("ImageReward-v1.0")
