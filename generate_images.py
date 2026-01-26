@@ -54,6 +54,13 @@ image_name = args.image_name.replace(' ','_')
 image_save_dir = args.save_dir+'/'+image_name
 alphas = args.alpha.split(',')
 number_images = len(alphas)
+is_origin_image = False
+
+if not os.path.exists(image_save_dir):
+    os.makedirs(image_save_dir)
+
+ with open(args.steering_vectors, 'rb') as handle:
+     steering_vectors = pickle.load(handle)
 
 print('Generating for prompt:')
 print(args.prompt)
@@ -61,13 +68,9 @@ print(args.prompt)
 for i in range(len(alphas)):
     alphai = int(alphas[i])
     print('Step with alpha:', alphai)
-
-    if not os.path.exists(image_save_dir):
-        os.makedirs(image_save_dir)
-
-    with open(args.steering_vectors, 'rb') as handle:
-        steering_vectors = pickle.load(handle)
-
+    if alphai == 0:
+        is_origin_image = True
+    ##
     controller = VectorStore(steering_vectors, device=device)
     controller.steer_only_up = True if args.steer_only_up else False
 
@@ -83,5 +86,6 @@ for i in range(len(alphas)):
     image = run_model(args.model, pipe, args.prompt, args.seed, args.num_denoising_steps)
     image.save(os.path.join(image_save_dir, "{}.png".format(str(i+1))))
 
+# evaluate generated images
 if args.evaluate_images:
-    calculate_image_score(image_save_dir, args.prompt, number_images)
+    calculate_image_score(image_save_dir, args.prompt, number_images, is_origin_image)

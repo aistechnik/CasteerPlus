@@ -3,10 +3,11 @@ import argparse
 import torch
 import ImageReward as RM
 
-def calculate_image_score(img_prefix, prompt, num_images):
+def calculate_image_score(img_prefix, prompt, num_images, is_origin_image):
     prompt = prompt + ", anime style"
     size = num_images + 1
-    generations = [f"{pic_id}.png" for pic_id in range(1, size)]
+    indx = 0 if is_origin_image else 1
+    generations = [f"{pic_id}.png" for pic_id in range(indx, size)]
     img_list = [os.path.join(img_prefix, img) for img in generations]
     model = RM.load("ImageReward-v1.0")
 
@@ -26,7 +27,4 @@ def calculate_image_score(img_prefix, prompt, num_images):
                 best_index = index
 
     print(f"The best image with the highest score is {img_list[best_index]}")
-
-    
-
 
