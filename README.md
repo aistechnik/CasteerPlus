@@ -1,8 +1,10 @@
 # CasteerPlus
-Данный репозиторий основан на коде репозиториятатьA customizable implementation of [CASteer](https://arxiv.org/abs/2503.09630) for steering of generation of the high quality images in Stable Diffusion models,
+Данный репозиторий основан на коде репозитория https://github.com/Atmyre/CASteer - официального кода статьи "CASteer: Steering Diffusion Models for Controllable Generation" (https://arxiv.org/abs/2503.09630). 
 
-based on the code for the paper "CASteer: Steering Diffusion Models for Controllable Generation" () and also on the repository code (
+Целью проекта является создание фреймворка, позволяющего генерировать качественные изображения с помощью Stable Diffusion моделей, steering векторов и модели CASteer, изложенной в вышеприведенной статье.
 
-https://github.com/Atmyre/CASteer
+
+
+
 
 
