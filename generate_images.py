@@ -54,7 +54,10 @@ image_name = args.image_name.replace(' ','_')
 image_save_dir = args.save_dir+'/'+image_name
 alphas = args.alpha.split(',')
 number_images = len(alphas)
-is_origin_image = False
+if args.evaluate_images and number_images > 1:
+    evaluate_images = True
+else:
+    evaluate_images = False
 
 if not os.path.exists(image_save_dir):
     os.makedirs(image_save_dir)
@@ -87,5 +90,5 @@ for i in range(len(alphas)):
     image.save(os.path.join(image_save_dir, "{}.png".format(str(i+1))))
 
 # evaluate generated images
-if args.evaluate_images:
-    calculate_image_score(image_save_dir, args.prompt, number_images, is_origin_image)
+if evaluate_images:
+    calculate_image_score(image_save_dir, args.prompt, number_images)
