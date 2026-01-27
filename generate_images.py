@@ -49,7 +49,7 @@ def run_model(model_type, pipe, prompt, seed, num_denoising_steps):
     elif args.model in ['sdxl-turbo-image']:
         init_image = load_image("https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/diffusers/cat.png").resize((512, 512))
 
-        image = pipe(prompt=prompt,image=init_image
+        image = pipe(prompt=prompt,image=init_image,
                      num_inference_steps=2, # num_denoising_steps,
                      strength=0.5,
                      guidance_scale=0.0,
