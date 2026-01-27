@@ -2,7 +2,7 @@ import os
 import argparse
 import torch
 import pickle
-import subprocess
+from diffusers.utils import load_image
 
 # local imports
 from controller import VectorStore, register_vector_control
