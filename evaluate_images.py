@@ -2,8 +2,9 @@ import os
 import argparse
 import torch
 import ImageReward as RM
+from PIL import Image
 
-def calculate_image_score(img_prefix, prompt, num_images):
+def calculate_image_score(img_prefix, prompt, num_images, show_image):
     prompt = prompt + ", anime style"
     size = num_images + 1
 
@@ -28,3 +29,6 @@ def calculate_image_score(img_prefix, prompt, num_images):
 
     print(f"The best image with the highest score is {img_list[best_index]}")
 
+    if show_image:
+        image = Image.open(img_list[best_index])
+        image.show()

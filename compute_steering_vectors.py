@@ -4,6 +4,7 @@ import numpy as np
 import torch
 import pickle
 from collections import defaultdict
+from diffusers.utils import load_image
 
 # local imports
 from construct_prompts import get_prompts_concrete, get_prompts_style, get_prompts_human_related
@@ -13,9 +14,9 @@ from models import get_model
 
 # parsing arguments
 parser = argparse.ArgumentParser()
-parser.add_argument('--model', type=str, choices=['sdxl', 'sdxl-turbo', 'sdxl-tuned', 'sdxl-turbo-tuned'], default="sdxl-turbo")
+parser.add_argument('--model', type=str, choices=['sdxl', 'sdxl-turbo', 'sdxl-tuned', 'sdxl-turbo-image'], default="sdxl-turbo")
 parser.add_argument('--mode', type=str, choices=['concrete', 'human-related', 'style'], default="style")
-parser.add_argument('--num_denoising_steps', type=int, default=50) # 1 for turbo, 30 for sdxl
+parser.add_argument('--num_denoising_steps', type=int, default=30) # 30 for sdxl, 1 for turbo, 2 for turbo-image
 parser.add_argument('--concept_pos', type=str, default="anime")
 parser.add_argument('--concept_neg', type=str, default=None)
 parser.add_argument('--save_dir', type=str, default='casteer_vectors') # path to saving steering vectors
@@ -37,9 +38,19 @@ def run_model(model_type, pipe, prompt, seed, num_denoising_steps):
                      generator=torch.Generator(device=device).manual_seed(seed)
                     ).images[0]
       
-    elif args.model in ['sdxl-turbo', 'sdxl-turbo-tuned']:
+    elif args.model in ['sdxl-turbo']:
         image = pipe(prompt=prompt, 
                      num_inference_steps=num_denoising_steps,
+                     guidance_scale=0.0,
+                     generator=torch.Generator(device=device).manual_seed(seed)
+                    ).images[0]
+
+    elif args.model in ['sdxl-turbo-image']:
+        init_image = load_image("https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/diffusers/cat.png").resize((512, 512))
+
+        image = pipe(prompt=prompt,image=init_image
+                     num_inference_steps=2, # num_denoising_steps,
+                     strength=0.5,
                      guidance_scale=0.0,
                      generator=torch.Generator(device=device).manual_seed(seed)
                     ).images[0]
