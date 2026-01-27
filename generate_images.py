@@ -2,7 +2,8 @@ import os
 import argparse
 import torch
 import pickle
-from diffusers.utils import load_image
+from PIL import Image
+#from diffusers.utils import load_image
 
 # local imports
 from controller import VectorStore, register_vector_control
@@ -49,7 +50,7 @@ def run_model(model_type, pipe, prompt, seed, num_denoising_steps):
 
     elif args.model in ['sdxl-turbo-image']:
         #init_image = load_image("https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/diffusers/cat.png").resize((512, 512))
-        init_image = args.save_dir+'/'+args.init_image
+        init_image = Image.open(args.save_dir+'/'+args.init_image)
 
         image = pipe(prompt=prompt,image=init_image,
                      num_inference_steps=2, # num_denoising_steps,
