@@ -14,6 +14,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--model', type=str, choices=['sdxl', 'sdxl-turbo', 'sdxl-tuned', 'sdxl-turbo-image'], default="sdxl-turbo")
 parser.add_argument('--image_name', type=str, default="girl_with_kitty")
 parser.add_argument('--prompt', type=str, default="a girl with a kitty")
+parser.add_argument('--init_image', type=str, default="girl_with_kitty")
 parser.add_argument('--seed', type=int, default=0)
 parser.add_argument('--steering_vectors', type=str) # path to steering vectors file
 parser.add_argument('--steer_only_up', action='store_true')
@@ -47,7 +48,8 @@ def run_model(model_type, pipe, prompt, seed, num_denoising_steps):
                     ).images[0]
 
     elif args.model in ['sdxl-turbo-image']:
-        init_image = load_image("https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/diffusers/cat.png").resize((512, 512))
+        #init_image = load_image("https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/diffusers/cat.png").resize((512, 512))
+        init_image = args.save_dir+'/'+args.init_image
 
         image = pipe(prompt=prompt,image=init_image,
                      num_inference_steps=2, # num_denoising_steps,
