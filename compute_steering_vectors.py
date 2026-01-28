@@ -4,7 +4,7 @@ import numpy as np
 import torch
 import pickle
 from collections import defaultdict
-from diffusers.utils import load_image
+#from diffusers.utils import load_image
 
 # local imports
 from construct_prompts import get_prompts_concrete, get_prompts_style, get_prompts_human_related
@@ -46,9 +46,10 @@ def run_model(model_type, pipe, prompt, seed, num_denoising_steps):
                     ).images[0]
 
     elif args.model in ['sdxl-turbo-image']:
-        init_image = load_image("https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/diffusers/cat.png").resize((512, 512))
+        #init_image = load_image("https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/diffusers/cat.png").resize((512, 512))
+        init_image = Image.open(args.save_dir+'/'+args.init_image)
 
-        image = pipe(prompt=prompt,image=init_image
+        image = pipe(prompt=prompt,image=init_image,
                      num_inference_steps=2, # num_denoising_steps,
                      strength=0.5,
                      guidance_scale=0.0,
