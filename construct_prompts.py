@@ -3,7 +3,7 @@
 def get_imagenet_classes(num=50):
     imagenet_classes = []
     
-    f = open('imagenet_classes.txt', 'r')
+    f = open('imagenet_test.txt', 'r')
     for line in f.readlines():
         imagenet_classes.append(line.strip())
     f.close()
@@ -28,11 +28,13 @@ def get_prompts_concrete(num=50, concept_pos='Snoopy', concept_neg=None):
 def get_prompts_style(num=50, concept_pos='anime', concept_neg=None):
     
     imagenet_classes = get_imagenet_classes(num)
+
+    prompt = 'detailed, fantasy, cute, adorable, Pixar, Disney, 8k'
     
     prompts_pos = []
     prompts_neg = []
     for cls in imagenet_classes[:num]:
-        prompts_pos.append(cls+', {} style'.format(concept_pos))
+        prompts_pos.append(cls+' {}, {} style'.format(prompt, concept_pos))
         if concept_neg is not None:
             prompts_neg.append(cls+', {} style'.format(concept_neg))
         else:
