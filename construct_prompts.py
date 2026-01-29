@@ -29,12 +29,10 @@ def get_prompts_style(num=50, concept_pos='anime', concept_neg=None):
     
     imagenet_classes = get_imagenet_classes(num)
 
-    prompt = 'detailed, fantasy, cute, adorable, Pixar, Disney, 8k'
-    
     prompts_pos = []
     prompts_neg = []
     for cls in imagenet_classes[:num]:
-        prompts_pos.append(cls+' {}, {} style'.format(prompt, concept_pos))
+        prompts_pos.append(cls+', {} style'.format(concept_pos))
         if concept_neg is not None:
             prompts_neg.append(cls+', {} style'.format(concept_neg))
         else:

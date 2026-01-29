@@ -102,21 +102,22 @@ steering_vectors = {}
 
 for denoising_step in range(0, args.num_denoising_steps):
     steering_vectors[denoising_step] = defaultdict(list)
-    
+    nums = 0
     for key in ['up', 'down', 'mid']:
         for layer_num in range(len(pos_vectors[0][denoising_step][key])):
             
             pos_vectors_layer = [pos_vectors[i][denoising_step][key][layer_num] for i in range(len(pos_vectors))]
-            pos_vectors_avg = np.mean(pos_vectors_layer, axis=0)
+            #pos_vectors_avg = np.mean(pos_vectors_layer, axis=0)
             
             neg_vectors_layer = [neg_vectors[i][denoising_step][key][layer_num] for i in range(len(neg_vectors))]
-            neg_vectors_avg = np.mean(neg_vectors_layer, axis=0)
+            #neg_vectors_avg = np.mean(neg_vectors_layer, axis=0)
             
             steering_vector = pos_vectors_avg - neg_vectors_avg
             steering_vector = steering_vector / np.linalg.norm(steering_vector)
             
             steering_vectors[denoising_step][key].append(steering_vector)
-
+            nums += 1
+    print("NUMS=== ", nums)
 
 # Saving steering vectors:
 if not os.path.exists(args.save_dir):
