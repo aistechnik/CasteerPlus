@@ -119,8 +119,8 @@ for denoising_step in range(0, args.num_denoising_steps):
                 steering_vectors[denoising_step][key].append(steering_vector)
 
                 nums += 1
-                print("layer_num== k==", layer_num, k)
-        print("nums== ", nums, layer_num)
+                print("layer_num== key==", layer_num, key)
+    print("nums== ", nums)
         ##end
 # Saving steering vectors:
 if not os.path.exists(args.save_dir):
